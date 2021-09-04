@@ -35,7 +35,7 @@ make apply-deployment
 make apply-service
 ```
 
-Important! Before moving on to step 3 wait for the EXTERNAL-IP of the
+⚠️ Important! Before moving on to step 3 wait for the EXTERNAL-IP of the
 affinity-tester service to go from pending to a real IP address.  Then update
 `TARGET_ADDR` in `env.list` with the EXTERNAL-IP of the affinity-tester
 service.
