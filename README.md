@@ -21,13 +21,13 @@ Prerequisite are to have git, make, docker and kubectl installed locally, and ha
 your kubectl configured such that it runs commands against the Kubernetes
 cluster that you want to test. Then check out this git repository locally.
 
-*Step 1* is to deploy the server part of the affinity-tester in your Kubernetes cluster. 
+**Step 1** is to deploy the server part of the affinity-tester in your Kubernetes cluster. 
 This creates 3 pods with a pre-build Docker container from Dockerhub that runs the code in `server/`.
 ```
 make apply-deployment
 ``` 
 
-*Step 2* is to create a service in your cluster that is reachable from the outside.
+**Step 2** is to create a service in your cluster that is reachable from the outside.
 ```
 make apply-service
 ```
@@ -37,7 +37,7 @@ affinity-tester service to go from pending to a real IP address.  Then update
 `TARGET_ADDR` in `env.list` with the EXTERNAL-IP of the affinity-tester
 service.
 
-*Step 3* is to start the client. The client won't stop until you kill it with CTRL-C.
+**Step 3** is to start the client. The client won't stop until you kill it with CTRL-C.
 You may want to run this in a separate terminal and keep an eye on the logs.
 The client logs at a regular interval statistics on packets sent and lost (in white text).
 Upon detecting either a change in pod or a change in reflective address the client logs this change (in red text).
@@ -45,7 +45,7 @@ Examples of client logs are given in the section at the bottom of this document.
 
 Before proceeding with the next step let the client run for a while and ensure operation is normal (no packet loss or errors).
 
-*Step 4* is to try out operations that you suspect cause your version and
+**Step 4** is to try out operations that you suspect cause your version and
 configuration of Kubernetes to violate the requirements while keeping out an
 eye on the logs.
 
@@ -57,7 +57,7 @@ deployment that requests a large amount CPUs and thus is likely to trigger node 
 make node-scaleup
 ```
 
-Final step: when done kill the client with CTRL-C then delete the deployments and services used for this test
+**Final step**: when done kill the client with CTRL-C then delete the deployments and services used for this test
 from your Kubernetes cluster with
 
 ```
