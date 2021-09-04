@@ -6,10 +6,13 @@ and
 [DTLS](https://en.wikipedia.org/wiki/Datagram_Transport_Layer_Security),
 require session affinity.
 For Kubernetes this means that as long as the backend pool of pods is unchanged (no scaling, no deleting of pods)
-that for 2 successive packets send by the same client address (IP and port):
+that for 2 packets P and Q sent successively from the same client source address and with a small enough time interval between P and Q then
 
- - the 2 packets are served by the same pod
- - the 2 packets are presented to the pod with the same reflective address (IP and port)
+ - Packets P and Q packets are served by the same pod
+ - Packets P and Q are presented to the pod with the same reflective address
+
+where address is the combination of IP and port. 
+(Note that due to NAT'ing on the internet the client source address may be different from the reflective address).
 
 Some versions and configurations of Kubernetes incorrectly do not satisfy these requirements.
 That is a pity because violation results in sessions to be disrupted and parts of media streams to be lost.
