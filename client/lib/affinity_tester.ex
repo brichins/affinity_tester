@@ -11,7 +11,7 @@ defmodule AffinityTester do
   def init([tgt_ip, tgt_port]) do
     {:ok, sock} = :gen_udp.open(0, [mode: :binary, active: true])
     :timer.send_interval(20_000, :ping) # 20s
-    :timer.send_interval(15 * 60_000, :stats) # 15min
+    :timer.send_interval(1 * 60_000, :stats) # 1min
     id = Enum.random 1_000_000_000..2_147_483_647
     {:ok, %{sock: sock, tgt_ip: tgt_ip, tgt_port: tgt_port, seq: 1, sent: [], id: id, pod_name: nil, x_address: nil}}
   end
@@ -30,8 +30,8 @@ defmodule AffinityTester do
     end
   end
 
-  def handle_info(:stats, state = %{id: id, seq: seq, sent: sent}) do
-    Logger.info "CLIENT-#{id} sent #{seq} messages of which #{length(sent) - 1} message(s) lost"
+  def handle_info(:stats, state = %{id: id, seq: seq, sent: sent, pod_name: pod_name}) do
+    Logger.info "CLIENT-#{id} sent #{seq} messages of which #{length(sent) - 1} message(s) lost, served by pod #{inspect pod_name}"
     {:noreply, state}
   end
 
