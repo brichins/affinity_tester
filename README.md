@@ -11,7 +11,7 @@ that for 2 successive packets send by the same client address (IP and port):
  - the 2 packets are served by the same pod
  - the 2 packets are presented to the pod with the same reflective address (IP and port)
 
-Some versions and configurations of Kubernetes do not satisfy these requirements.
+Some versions and configurations of Kubernetes incorrectly do not satisfy these requirements.
 That is a pity because violation results in sessions to be disrupted and parts of media streams to be lost.
 This is a tool to validate if your version and configuration of Kubernetes satisfies the above requirements.
 
@@ -42,6 +42,10 @@ You may want to run this in a separate terminal and keep an eye on the logs.
 The client logs at a regular interval statistics on packets sent and lost (in white text).
 Upon detecting either a change in pod or a change in reflective address the client logs this change (in red text).
 Examples of client logs are given in the section at the bottom of this document.
+
+```
+make client
+```
 
 Before proceeding with the next step let the client run for a while and ensure operation is normal (no packet loss or errors).
 
