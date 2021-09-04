@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: affinity-tester
+  labels:
+    app: affinity-tester
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: affinity-tester
+  template:
+    metadata:
+      labels:
+        app: affinity-tester
+    spec:
+      containers:
+      - name: affinity-tester
+        image: "faddegon/affinity_tester:0.1"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 56789
+        resources:
+          limits:
+            cpu: "0.1"
+            memory: "1Gi"
+          requests:
+            cpu: "0.1"
+            memory: "1Gi"
+        readinessProbe:
+          exec:
+            command:
+            - /bin/true
+        livenessProbe:
+          exec:
+            command:
+            - /bin/true
+        env:
+          - name: PORT
+            value: "56789"
+          - name: MY_POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+      securityContext:
+        runAsUser: 1000
+      ### affinity:
+      ###   nodeAffinity:
+      ###     requiredDuringSchedulingIgnoredDuringExecution:
+      ###       nodeSelectorTerms:
+      ###       - matchExpressions:
+      ###         - key: #{node_affinity_key}#
+      ###           operator: In
+      ###           values:
+      ###           - media
+      tolerations:
+      - key: dedicated
+        operator: Equal
+        value: media
+        effect: NoSchedule

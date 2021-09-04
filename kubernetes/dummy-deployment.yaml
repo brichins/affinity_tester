@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dummy
+  labels:
+    app: dummy
+spec:
+  selector:
+    matchLabels:
+      app: dummy
+  replicas: 60
+  template:
+    metadata:
+      labels:
+        app: dummy
+    spec:
+      containers:
+      - name: dummy
+        image: debian:buster
+        command: ["/bin/sh"]
+        args: ["-c", "while true; do date; sleep 10;done"]
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "3"
+            memory: "1Gi"
+          requests:
+            cpu: "3"
+            memory: "1Gi"
+        readinessProbe:
+          exec:
+            command:
+            - /bin/true
+        livenessProbe:
+          exec:
+            command:
+            - /bin/true
+      securityContext:
+        runAsUser: 1000
+      tolerations:
+      - key: dedicated
+        operator: Equal
+        value: media
+        effect: NoSchedule
